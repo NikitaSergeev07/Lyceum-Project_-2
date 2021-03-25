@@ -58,11 +58,11 @@ def reqister():
 def index():
     db_sess = db_session.create_session()
     if current_user.is_authenticated:
-        news = db_sess.query(News).filter(
-            (News.user == current_user) | (News.is_private != True))
+        events = db_sess.query(News).filter(
+            (News.user == current_user))
     else:
-        news = db_sess.query(News).filter(News.is_private != True)
-    return render_template("index.html", news=news)
+        events = db_sess.query(News)
+    return render_template("index.html", news=events)
 
 
 @app.route('/logout')
@@ -76,11 +76,11 @@ def logout():
 def account():
     db_sess = db_session.create_session()
     if current_user.is_authenticated:
-        news = db_sess.query(News).filter(
-            (News.user == current_user) | (News.is_private != True))
+        events = db_sess.query(News).filter(
+            (News.user == current_user))
     else:
-        news = db_sess.query(News).filter(News.is_private != True)
-    return render_template("account.html", news=news)
+        events = db_sess.query(News)
+    return render_template("account.html", news=events)
 
 
 @app.route('/log_out')
@@ -112,11 +112,11 @@ def add_news():
     form = NewsForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
-        news = News()
-        news.title = form.title.data
-        news.content = form.content.data
-        news.is_private = form.is_private.data
-        current_user.news.append(news)
+        events = News()
+        events.title = form.title.data
+        events.content = form.content.data
+        events.price = form.price.data
+        current_user.news.append(events)
         db_sess.merge(current_user)
         db_sess.commit()
         return redirect('/')
@@ -130,24 +130,24 @@ def edit_news(id):
     form = NewsForm()
     if request.method == "GET":
         db_sess = db_session.create_session()
-        news = db_sess.query(News).filter(News.id == id,
+        events = db_sess.query(News).filter(News.id == id,
                                           News.user == current_user
                                           ).first()
-        if news:
-            form.title.data = news.title
-            form.content.data = news.content
-            form.is_private.data = news.is_private
+        if events:
+            form.title.data = events.title
+            form.content.data = events.content
+            form.price.data = events.price
         else:
             abort(404)
     if form.validate_on_submit():
         db_sess = db_session.create_session()
-        news = db_sess.query(News).filter(News.id == id,
+        events = db_sess.query(News).filter(News.id == id,
                                           News.user == current_user
                                           ).first()
-        if news:
-            news.title = form.title.data
-            news.content = form.content.data
-            news.is_private = form.is_private.data
+        if events:
+            events.title = form.title.data
+            events.content = form.content.data
+            events.price = form.price.data
             db_sess.commit()
             return redirect('/')
         else:
@@ -157,16 +157,15 @@ def edit_news(id):
                            form=form
                            )
 
-
 @app.route('/news_delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def news_delete(id):
     db_sess = db_session.create_session()
-    news = db_sess.query(News).filter(News.id == id,
+    events = db_sess.query(News).filter(News.id == id,
                                       News.user == current_user
                                       ).first()
-    if news:
-        db_sess.delete(news)
+    if events:
+        db_sess.delete(events)
         db_sess.commit()
     else:
         abort(404)
