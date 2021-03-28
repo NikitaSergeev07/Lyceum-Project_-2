@@ -2,7 +2,7 @@ from flask import Flask, make_response
 from data import db_session
 from data.users import User
 from data.object import News
-from flask import render_template, redirect, request, session
+from flask import render_template, redirect, request, flash, url_for
 from forms.user import RegisterForm
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
@@ -65,6 +65,29 @@ def index():
     return render_template("index.html", news=events)
 
 
+# Функция поиска
+@app.route("/search", methods=['POST', 'GET'])
+def search():
+    if request.method == 'GET':
+        return render_template('search.html')
+    elif request.method == 'POST':
+        print(request.form)
+
+
+
+@app.route('/contact', methods=["POST", "GET"])
+def contact():
+    if request.method == 'GET':
+        return render_template('contact.html')
+    elif request.method == 'POST':
+        # print(request.form['username'])
+        if len(request.form['username']) > 2:
+            flash('Сообщение отправлено', category='success')
+        else:
+            flash("Ошибка отправки", category='error')
+    return render_template('contact.html')
+
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -105,7 +128,6 @@ def login():
     return render_template('login.html', title='Авторизация', form=form)
 
 
-
 @app.route('/news', methods=['GET', 'POST'])
 @login_required
 def add_news():
@@ -131,8 +153,8 @@ def edit_news(id):
     if request.method == "GET":
         db_sess = db_session.create_session()
         events = db_sess.query(News).filter(News.id == id,
-                                          News.user == current_user
-                                          ).first()
+                                            News.user == current_user
+                                            ).first()
         if events:
             form.title.data = events.title
             form.content.data = events.content
@@ -142,8 +164,8 @@ def edit_news(id):
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         events = db_sess.query(News).filter(News.id == id,
-                                          News.user == current_user
-                                          ).first()
+                                            News.user == current_user
+                                            ).first()
         if events:
             events.title = form.title.data
             events.content = form.content.data
@@ -157,13 +179,14 @@ def edit_news(id):
                            form=form
                            )
 
+
 @app.route('/news_delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def news_delete(id):
     db_sess = db_session.create_session()
     events = db_sess.query(News).filter(News.id == id,
-                                      News.user == current_user
-                                      ).first()
+                                        News.user == current_user
+                                        ).first()
     if events:
         db_sess.delete(events)
         db_sess.commit()
@@ -177,18 +200,10 @@ def api():
     return render_template('Api.html')
 
 
-
-@app.route('/help')
-def help():
-    return render_template('help.html')
-
-
 @app.route('/donate')
 def donate():
     return render_template('donate.html')
 
 
-
 if __name__ == '__main__':
-    # if isinstance('12', str) == True:
     main()

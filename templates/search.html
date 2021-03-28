@@ -11,7 +11,15 @@
 <body>
 <body cz-shortcut-listen="true">
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-      <h5 class="my-0 mr-md-auto font-weight-normal">барахолка.рф</h5>
+      <h5 class="my-0 mr-md-auto font-weight-normal"><a class="main" href="/">барахолка.рф</a></h5>
+
+      <style type="text/css">
+        .main{color: black;}
+        .main:hover{
+        text-decoration: none;
+        color: black
+        }
+      </style>
       <nav class="my-2 my-md-0 mr-md-3">
         <a class="p-2 text-dark" href="/contact">Помощь</a>
         <a class="p-2 text-dark" href="/api">API</a>
@@ -29,7 +37,7 @@
       <p class="lead">Этот сайт предназначен для продажи электронного бизнеса</p>
 
 
-     <form action="/search" method="post">
+    <form action="/search" method="post">
       <div class="input-group mb-3">
         <div class="input-group-prepend">
   </div>
