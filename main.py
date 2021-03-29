@@ -69,10 +69,15 @@ def index():
 # Функция поиска
 @app.route("/search", methods=['POST', 'GET'])
 def search():
-    if request.method == 'GET':
+    if request.method == 'POST':
+        db_sess = db_session.create_session()
+        result = db_sess.query(News).filter(News.title.like('%a%'))
+        print(result)
+        print(request.form['category'])
+        print(request.form['mess'])
+        print(request.form['city'])
         return render_template('search.html')
-    elif request.method == 'POST':
-        print(request.form)
+    return render_template('search.html')
 
 
 
@@ -81,17 +86,20 @@ def contact():
     if request.method == 'GET':
         return render_template('contact.html')
     if request.method == 'POST':
-        if len(request.form['username']) > 2:
-            flash('Сообщение отправлено', category='success')
-            if request.form['username'] and request.form['email'] and request.form['message']:
-                db_sess = db_session.create_session()
-                contact = Contact_form(
-                    username=request.form['username'],
-                    email=request.form['email'],
-                    message=request.form['message']
-                )
-                db_sess.add(contact)
-                db_sess.commit()
+        try:
+            if len(request.form['username']) > 2:
+                flash('Сообщение отправлено', category='success')
+                if request.form['username'] and request.form['email'] and request.form['message']:
+                    db_sess = db_session.create_session()
+                    contact = Contact_form(
+                        username=request.form['username'],
+                        email=request.form['email'],
+                        message=request.form['message']
+                    )
+                    db_sess.add(contact)
+                    db_sess.commit()
+        except:
+            abort(404)
         else:
             flash("Ошибка отправки", category='error')
     return render_template('contact.html')

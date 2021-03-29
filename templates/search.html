@@ -41,34 +41,28 @@
       <div class="input-group mb-3">
         <div class="input-group-prepend">
   </div>
-  <select class="custom-select" id="inputGroupSelect01">
-    <option selected>Категория</option>
-    <option value="1">Телеграмм каналы</option>
-    <option value="2">Сайты</option>
-    <option value="3">ВК сообщества</option>
+  <select name="category" class="custom-select" id="inputGroupSelect01">
+    <option  selected>Категория</option>
+    <option value="Телеграмм каналы">Телеграмм каналы</option>
+    <option value="Сайты">Сайты</option>
+    <option value="ВК сообщества">ВК сообщества</option>
   </select>
 
-  <input type="text" value="" required name="input_text"  id="input_text" class="form-control" placeholder="Поиск по объявлениями" aria-label="Поиск по объявлениями" aria-describedby="basic-addon2">
+  <input type="text" value="" name="mess"  id="input_text" class="form-control" placeholder="Поиск по объявлениями" aria-label="Поиск по объявлениями" aria-describedby="basic-addon2">
 
     <div class="input-group-append">
 
   </div>
         <div class="input-group-prepend">
   </div>
-  <select class="custom-select" id="inputGroupSelect02">
+  <select name="city" class="custom-select" id="inputGroupSelect02">
     <option selected>Город</option>
-    <option value="1">Курск</option>
-    <option value="2">Москва</option>
-    <option value="3">Санкт-Петербург</option>
+    <option value="Курск">Курск</option>
+    <option value="Москва">Москва</option>
+    <option value="Санкт-Петербург">Санкт-Петербург</option>
   </select>
-          <a class="ubn" href="/search"><button class="btn btn-outline-secondary" type="button">Найти</button></a>
-         <style type="text/css">
-        .ubn:hover{
-        text-decoration: none;
-        color: black
-        }
+        <input type="submit" value="Найти" class="btn btn-outline-secondary">
 
-         </style>
 </div>
         </form>
     </div>
