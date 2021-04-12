@@ -6,10 +6,10 @@ from .db_session import SqlAlchemyBase
 
 categories = orm.relation("Category",
                           secondary="association",
-                          backref="news")
+                          backref="objects")
 
 
-class News(SqlAlchemyBase):
+class Objects(SqlAlchemyBase):
     __tablename__ = 'events'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
